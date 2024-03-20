@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +31,9 @@ public class ProductoController {
 	}
 	
 	@GetMapping("/productos/{id}")
-	public Producto obtener(@PathVariable int id){
-		Producto producto = service.obtenerProducto(id);
-		return producto;
+	public Optional<Producto> obtener(@PathVariable int id){
+		return service.obtenerProducto(id);
+		
 	
 	}
 	

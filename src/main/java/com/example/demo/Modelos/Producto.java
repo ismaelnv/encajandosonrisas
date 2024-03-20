@@ -1,23 +1,42 @@
 package com.example.demo.Modelos;
 
+import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "Producto")
 public class Producto {
 	
-	private int cod_pro;
-	private String nombre_pro;
-	private String categoria;
-	private String genero;
-	private String edad_recomendada;
-	private double peso_pro;
-	private String adicionales;
-	private String descripcion;
-	private boolean estado;
+	@Id
+	 private int cod_pro ;
+	 private String nombre_pro ;
+	 private Date fecha_cre ;
+	 private Date fecha_actu ;
+	 
+	 @Column(columnDefinition   = "TEXT")
+	 private String descripcion ;
+	 private double precio ;
+	 private String condicion_pro ;
+	 private boolean estado ;
+	 private String imagen_pro ;
+	 private String tamanio_pro ;
+	 private int codigo_tipo_categoria ;
+	 private String material;
+	 private double peso_pro ;
+	 private int edad_recomendada ;
+	 private double medidas ;
+
+	 
 }
