@@ -1,6 +1,7 @@
 package com.example.demo.Modelos;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ public class Producto {
 	 private int cod_pro ;
 	 private String nombre_pro ;
 	 private Date fecha_cre ;
-	 private Date fecha_actu ;
+	 private LocalDate fecha_actu ;
 	 
 	 @Column(columnDefinition   = "TEXT")
 	 private String descripcion ;
