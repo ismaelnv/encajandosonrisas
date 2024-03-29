@@ -1,6 +1,7 @@
 package com.example.demo.Servicios;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,7 @@ public class ProductoServicios implements IProductoServicios {
 	public Producto modificarProducto(int id, Producto p) {
 		Optional<Producto> producto = this.obtenerProducto(id);
 		if (producto.isPresent()) {
+			p.setFecha_actu(LocalDate.now());
 			return data.save(p);
 		}
 		return null;
