@@ -1,5 +1,11 @@
 package com.example.demo.Modelos;
 
+import java.sql.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +15,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "cliente")
 public class Cliente {
 
-	private int cod_cli;
-	private String nombres;
-	private String apellidos;
-	private String telefono;
-	private String direccion;
-	private String dni;
-	private boolean estado;
+	@Id
+	private int codigo_cli;
+
+	@Column( name ="fechacreacion")
+	private Date fechaCreacion;
+
+	@Column(name = "fechaactualizacion")
+	private Date fechaActualizacion;
+
+	@Column(name = "persona_id_per")
+	private int codigoPersona;
 }
