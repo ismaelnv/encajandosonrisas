@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.IClienteService;
 import com.example.demo.Modelos.Cliente;
+import com.example.demo.Modelos.Producto;
 
 
 @RestController
@@ -37,10 +39,15 @@ public class ClienteController {
     
 	@GetMapping("/clientes/{codigoCliente}")
 	public Optional<Cliente> obtenerClienteId(@PathVariable int codigoCliente){
+		
 		return clienteService.obtenerCliente(codigoCliente);
 	}
 	
-
-
-    
+	@PutMapping("/clientes/{codigoCliente}")
+	public Cliente editarCliente(@PathVariable int codigoCliente, @RequestBody Cliente cli) {
+		
+		Cliente clienteM =  clienteService.modificarCliente(codigoCliente, cli);
+		return clienteM;
+	}
+	
 }
