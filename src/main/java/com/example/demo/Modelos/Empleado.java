@@ -1,7 +1,6 @@
 package com.example.demo.Modelos;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -9,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -22,27 +20,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cliente")
-public class Cliente {
+@Table(name = "empleado")
+public class Empleado {
 
-	@Id
-	private int codigo_cli;
+    @Id
+    @Column(name = "codigo_emp")
+    private Integer codigoEmpleado;
 
-	@Column( name ="fechacreacion")
-	private LocalDate fechaCreacion;
+    @Column(name = "sueldoEmp")
+    private float sueldo;
 
-	@Column(name = "fechaactualizacion")
-	private LocalDate fechaActualizacion;
+    @Column(name = "horas_Trabajo")
+    private Integer horas;
 
-	@Column(name = "persona_id_per")
-	private Integer personaCodigo;
+    @Column(name = "fechaCreacion")
+    private LocalDate fechaCreacion;
 
-	@OneToOne
-	@JsonBackReference
+    @Column(name = "fechaActualizacion")
+    private LocalDate fechaActualizacion;
+    
+    @Column(name = "persona_id_per")
+    private Integer personaId;
+    
+    @OneToOne
     @JoinColumn(name = "persona_id_per",insertable = false, updatable = false)
-	private Persona codigoPersona;
-
-	@OneToMany(mappedBy = "codigoCliente")
-	@JsonBackReference
-    private List<Carrito> carritos;
+    @JsonBackReference
+    private Persona CodigoPersona;  
 }

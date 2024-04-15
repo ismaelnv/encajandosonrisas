@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.IClienteService;
 import com.example.demo.Modelos.Cliente;
-import com.example.demo.Modelos.Producto;
 
 
 @RestController

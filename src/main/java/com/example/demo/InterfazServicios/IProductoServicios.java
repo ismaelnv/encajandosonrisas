@@ -3,8 +3,11 @@ package com.example.demo.InterfazServicios;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.example.demo.Modelos.Producto;
 
+@Repository
 public interface IProductoServicios {
 
 	public List<Producto> listarProductos();
