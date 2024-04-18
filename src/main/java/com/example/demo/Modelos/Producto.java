@@ -37,7 +37,7 @@ public class Producto implements Serializable{
 	@Column(columnDefinition   = "TEXT")
 	private String descripcion ;
 	private double precio ;
-	private String condicion_pro ;
+	private String condicion_pro;
 	private boolean estado ;
 	private String imagen_pro ;
 	private String tamanio_pro ;
