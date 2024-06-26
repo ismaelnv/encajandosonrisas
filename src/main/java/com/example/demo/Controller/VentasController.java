@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.example.demo.Modelos.Ventas;
 
 @RestController
 @RequestMapping
+@CrossOrigin(origins = "http://localhost:4200")
 public class VentasController {
 	
 	@Autowired
@@ -25,31 +27,33 @@ public class VentasController {
 	
 	@GetMapping("/ventas")
 	public List<Ventas> list(){
+
 		List<Ventas> ventas = service.listarVentas();
 		return ventas;
-	
 	}
 	
 	@GetMapping("/ventas/{id}")
 	public Optional<Ventas> obtener(@PathVariable int id){
+
 		return service.obtenerVenta(id);
-		
-	
 	}
 	
 	@PutMapping("/ventas/{id}")
 	public Ventas editar(@PathVariable int id, @RequestBody Ventas v) {
-		Ventas modificado =  service.modificarVenta(id, v);
+
+		Ventas modificado = service.modificarVenta(id, v);
 		return modificado;
 	}
 	
 	@PostMapping("/ventas/nuevo")
 	public Ventas crear(@RequestBody Ventas v) {
+
 		return service.agregarVenta(v);
 	}
 
 	@PatchMapping("/ventas/{id}")
 	public Ventas eliminar(@PathVariable int id) {
+
 		return service.eliminarVenta(id);
 	}
 

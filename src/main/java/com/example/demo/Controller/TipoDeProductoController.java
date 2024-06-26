@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.ITipoDeProductoService;
@@ -29,7 +30,6 @@ public class TipoDeProductoController {
 	public List<TipoDeProducto> ObtenerTipoProductos(){
 
 		return _serviceTipoProducto.listarTipoProductos();
-	
 	}
 
     @PostMapping("/tipo_productos")
@@ -51,15 +51,15 @@ public class TipoDeProductoController {
 		return tipoProducto;
 	}
 
-    @GetMapping("/tipo_productos/{tProducto}/productos")
-	public TipoDeProducto obtenerProductosPorTProductoId(@PathVariable int tProducto){
-		
-		return _serviceTipoProducto.obtenerProductosPorIdTProducto(tProducto);
-	}
-
 	@DeleteMapping("/tipo_productos/{tProducto}")
 	public void elimianrTipoProducto(@PathVariable int tProducto){
 
 		_serviceTipoProducto.eliminarTipoDeProducto(tProducto);
+	}
+
+	@GetMapping("/tipo_productos/{tProducto}/productos")
+	public TipoDeProducto obtenerProductosPorTProductoId(@PathVariable int tProducto, @RequestParam String orden){
+		
+		return _serviceTipoProducto.obtenerProductosPorIdTProducto(tProducto, orden);
 	}
 }

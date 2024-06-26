@@ -15,4 +15,5 @@ public interface IProductoServicios {
 	public Producto modificarProducto(int id, Producto p);
 	public Producto agregarProducto(Producto p);
 	public Producto eliminarProducto(int id);
+	public void eliminarProductoDelSistema(Integer id);
 }

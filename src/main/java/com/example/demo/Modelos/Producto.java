@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -51,7 +52,7 @@ public class Producto implements Serializable{
 	@JsonBackReference
 	private TipoDeProducto  tipoDeProducto;
 
-	@OneToMany(mappedBy = "producto")
+	@OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonDeserialize
     private List<Imagen>  imagenes;
 }

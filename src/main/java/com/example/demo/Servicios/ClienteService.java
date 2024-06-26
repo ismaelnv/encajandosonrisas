@@ -72,7 +72,6 @@ public class ClienteService implements IClienteService  {
     public Cliente eliminarCliente(int codigoCli) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarCliente'");
-       
     }
 
 }

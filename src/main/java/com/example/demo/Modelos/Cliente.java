@@ -26,7 +26,7 @@ import lombok.Setter;
 public class Cliente {
 
 	@Id
-	private int codigo_cli;
+	private Integer codigo_cli;
 
 	@Column( name ="fechacreacion")
 	private LocalDate fechaCreacion;

@@ -29,6 +29,7 @@ public class VentasServicios implements IVentasServicios{
 
 	@Override
 	public Ventas modificarVenta(int id, Ventas v) {
+
 		Optional<Ventas> venta = this.obtenerVenta(id);
 		if (venta.isPresent()) {
 			v.setFecha_actu(LocalDate.now());
@@ -39,11 +40,13 @@ public class VentasServicios implements IVentasServicios{
 
 	@Override
 	public Ventas agregarVenta(Ventas v) {
+
 		return data.save(v);
 	}
 
 	@Override
 	public Ventas eliminarVenta(int id) {
+		
 		Optional<Ventas> optionalVenta = data.findById(id);
 	    if (optionalVenta.isPresent()) {
 	    	Ventas venta = optionalVenta.get();

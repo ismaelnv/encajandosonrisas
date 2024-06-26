@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.InterfazServicios.IClienteService;
 import com.example.demo.Modelos.Cliente;
 
-
 @RestController
 @RequestMapping
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClienteController {
 
     @Autowired
