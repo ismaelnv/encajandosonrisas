@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,6 +28,7 @@ import lombok.Setter;
 public class Carrito {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_carrito")
     private Integer codigoCarrito;
 
@@ -40,25 +43,26 @@ public class Carrito {
     @Column(name = "cantidad_productos")
     private Integer cantidad;
 
-    @Column(name = "codigo_cliente")
-    private Integer clienteCodigo;
-
-    @Column(name = "codigo_venta")
-    private Integer ventaCodigo;
-
-    @ManyToOne
-    @JoinColumn(name = "codigo_cliente",insertable = false, updatable = false)
-    @JsonBackReference
-    private Cliente codigoCliente;
+//    @Column(name = "codigo_cliente")
+//    private Integer clienteCodigo;
+//
+//    @Column(name = "codigo_venta")
+//    private Integer ventaCodigo;
 
     @ManyToOne
-    @JoinColumn(name = "codigo_venta",insertable = false, updatable = false)
+    @JoinColumn(name = "codigo_cliente")
     @JsonBackReference
-    private Ventas codigoVenta;
+    private Cliente cliente;
 
+//    @ManyToOne
+//    @JoinColumn(name = "codigo_venta")
+//    @JsonBackReference
+//    private Ventas venta;
+
+    
     private Integer total;
 
-    @OneToMany(mappedBy = "codigoCarrito")
-    @JsonBackReference
-	private List<DetalleDeCarrito> dcarritos;
+//    @OneToMany(mappedBy = "carrito")
+//    @JsonBackReference
+//	private List<DetalleDeCarrito> dcarritos;
 }

@@ -35,7 +35,7 @@ public class Ventas {
 	private boolean estado;
 	private String metodo_envio;
 
-	@OneToMany(mappedBy = "codigoVenta")
-	@JsonBackReference
-	private List<Carrito> carritos;
+//	@OneToMany(mappedBy = "codigoVenta")
+//	@JsonBackReference
+//	private List<Carrito> carritos;
 }

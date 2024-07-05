@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.InterfazServicios.ICarritoService;
 import com.example.demo.Modelos.Carrito;
+import com.example.demo.Modelos.Producto;
+import com.example.demo.Modelos.DTO.CarritoDto;
+import com.example.demo.Modelos.DTO.ProductoCarritoDto;
 
 @RestController
 @RequestMapping
@@ -52,5 +56,19 @@ public class CarritoController {
 
 		_serviceCarrito.eliminarCarrito(codigoCarrito);
 	}
+	
+	@PostMapping("/carritos/agregarproducto/{codcli}")
+	public ResponseEntity<CarritoDto> agregarProducto(@RequestBody ProductoCarritoDto producto, @PathVariable Integer codcli) {
+
+		return ResponseEntity.ok(_serviceCarrito.agregarProducto(producto, codcli));
+	}
     
+	@GetMapping("/clientes/{id}/carritos")
+	public List<CarritoDto> carritosCliente(){
+		
+		return null;
+	}
 }
+
+
+

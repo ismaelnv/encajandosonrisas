@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -26,7 +28,9 @@ import lombok.Setter;
 public class Cliente {
 
 	@Id
-	private int codigo_cli;
+	@Column(name = "codigo_cli")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int codigocli;
 
 	@Column( name ="fechacreacion")
 	private LocalDate fechaCreacion;
@@ -42,7 +46,7 @@ public class Cliente {
     @JoinColumn(name = "persona_id_per",insertable = false, updatable = false)
 	private Persona codigoPersona;
 
-	@OneToMany(mappedBy = "codigoCliente")
+	@OneToMany(mappedBy = "cliente")
 	@JsonBackReference
     private List<Carrito> carritos;
 }
