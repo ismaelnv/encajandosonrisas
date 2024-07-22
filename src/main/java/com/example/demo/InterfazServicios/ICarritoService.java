@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.Modelos.Carrito;
 import com.example.demo.Modelos.DTO.CarritoDto;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
 import com.example.demo.Modelos.DTO.ProductoCarritoDto;
 
 @Repository
@@ -19,4 +20,6 @@ public interface ICarritoService {
 	public void eliminarCarrito(int codigoCarrito);
 	public CarritoDto agregarProducto(ProductoCarritoDto producto, int codigocliente);
 	public List<Carrito> carritosCliente(int codcli);
+	public Integer obtenerCantCarrito(Integer codcarrito);
+	public List<InfoCarritoDto> listarInfoCarritos();
 }

@@ -31,7 +31,8 @@ public class Producto implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cod_pro ;
+	@Column(name = "cod_pro")
+	private Integer codpro ;
 	private String nombre_pro ;
 	private LocalDate fecha_cre ;
 	private LocalDate fecha_actu ;

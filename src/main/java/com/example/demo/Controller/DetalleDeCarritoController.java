@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.IDetalleDeCarritoService;
 import com.example.demo.Modelos.DetalleDeCarrito;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
+import com.example.demo.Modelos.DTO.InfoDetalleCarritoDto;
 
 @RestController
 @RequestMapping
@@ -29,6 +31,13 @@ public class DetalleDeCarritoController {
 		
         List<DetalleDeCarrito> detalleDeCarritos = _serviceDetalleDeCarrito.listarDetalleDeCarritos();
 		return detalleDeCarritos;
+	}
+    
+    @GetMapping("/infodetallecarritos")
+	public List<InfoDetalleCarritoDto> listarInfoCarritos(){
+		
+        List<InfoDetalleCarritoDto> detalles = _serviceDetalleDeCarrito.listarInfoDetalleCarrito();
+		return detalles;
 	}
 	
 	@GetMapping("/detalle_carritos/{codigoDCarrito}")

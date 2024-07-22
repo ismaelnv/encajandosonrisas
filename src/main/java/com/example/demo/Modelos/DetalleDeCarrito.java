@@ -42,4 +42,12 @@ public class DetalleDeCarrito {
     
     @Column(name = "cantidad")
     private Integer cantidaddetalle;
+    
+    public Double getTotal() {
+    	Double montoTotal = 0.0;
+    	montoTotal = producto.getPrecio()*cantidaddetalle;
+    	
+    	return montoTotal;
+    	
+    }
 }

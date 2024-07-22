@@ -17,6 +17,7 @@ import com.example.demo.InterfazServicios.ICarritoService;
 import com.example.demo.Modelos.Carrito;
 import com.example.demo.Modelos.Producto;
 import com.example.demo.Modelos.DTO.CarritoDto;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
 import com.example.demo.Modelos.DTO.ProductoCarritoDto;
 
 @RestController
@@ -30,6 +31,13 @@ public class CarritoController {
 	public List<Carrito> listarCarritos(){
 		
         List<Carrito> carritos = _serviceCarrito.listarCarritos();
+		return carritos;
+	}
+    
+    @GetMapping("/infocarritos")
+	public List<InfoCarritoDto> listarInfoCarritos(){
+		
+        List<InfoCarritoDto> carritos = _serviceCarrito.listarInfoCarritos();
 		return carritos;
 	}
 	
@@ -61,6 +69,12 @@ public class CarritoController {
 	public ResponseEntity<CarritoDto> agregarProducto(@RequestBody ProductoCarritoDto producto, @PathVariable Integer codcli) {
 
 		return ResponseEntity.ok(_serviceCarrito.agregarProducto(producto, codcli));
+	}
+	
+	@GetMapping("/carritos/productos/{codcarrito}")
+	public ResponseEntity<Integer> cantidadPorCarrito(@PathVariable Integer codcarrito){
+		
+		return ResponseEntity.ok(_serviceCarrito.obtenerCantCarrito(codcarrito));
 	}
     
 	@GetMapping("/clientes/{id}/carritos")

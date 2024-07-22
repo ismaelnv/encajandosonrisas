@@ -2,6 +2,9 @@ package com.example.demo.Modelos;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.InterfazServicios.ICarritoService;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -26,13 +29,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "carritocompras")
 public class Carrito {
+	
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_carrito")
     private Integer codigoCarrito;
 
-    @Column(name = "fecha_reacion")
+    @Column(name = "fecha_creacion")
     private LocalDate fechaCreacion;
 
     @Column(name = "fecha_actualizacion")
@@ -40,8 +44,8 @@ public class Carrito {
 
     private Boolean estado;
 
-    @Column(name = "cantidad_productos")
-    private Integer cantidad;
+//    @Column(name = "cantidad_productos")
+//    private Integer cantidad;
 
 //    @Column(name = "codigo_cliente")
 //    private Integer clienteCodigo;
@@ -51,7 +55,7 @@ public class Carrito {
 
     @ManyToOne
     @JoinColumn(name = "codigo_cliente")
-    @JsonBackReference
+    //@JsonBackReference
     private Cliente cliente;
 
 //    @ManyToOne
@@ -60,9 +64,24 @@ public class Carrito {
 //    private Ventas venta;
 
     
-    private Integer total;
+//    private Integer total;
 
-//    @OneToMany(mappedBy = "carrito")
-//    @JsonBackReference
-//	private List<DetalleDeCarrito> dcarritos;
+    @OneToMany(mappedBy = "carrito")
+    @JsonBackReference
+	private List<DetalleDeCarrito> dcarritos;
+    
+    public Integer getCantidad() {
+    	Integer canttotal = 0;
+    	for (DetalleDeCarrito detalleDeCarrito : dcarritos) {
+			canttotal += detalleDeCarrito.getCantidaddetalle();
+		}
+    	
+    	return canttotal;
+    }
+    
 }
+
+
+
+
+

@@ -9,6 +9,8 @@ import com.example.demo.Modelos.Producto;
 import com.example.demo.Modelos.Ventas;
 import com.example.demo.Modelos.DTO.CarritoDto;
 import com.example.demo.Modelos.DTO.ClienteDto;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
+import com.example.demo.Modelos.DTO.InfoDetalleCarritoDto;
 import com.example.demo.Modelos.DTO.ProductoCarritoDto;
 import com.example.demo.Modelos.DTO.VentaDto;
 
@@ -20,7 +22,7 @@ public class CarritoMapper {
 		carro.setCodigoCarrito(producto.getCod_carrito());
 		
 		Producto prod = new Producto();
-		prod.setCod_pro(producto.getCod_producto());
+		prod.setCodpro(producto.getCod_producto());
 		
 		DetalleDeCarrito detalle = new DetalleDeCarrito();
 		
@@ -50,6 +52,32 @@ public class CarritoMapper {
 		
 		return carrito;
 		
+	}
+	
+	public static InfoCarritoDto mapToInfoCarritoDto(Carrito carrito) {
+		
+		InfoCarritoDto infoCarrito = new InfoCarritoDto();
+		infoCarrito.setCodigoCarrito(carrito.getCodigoCarrito());
+		infoCarrito.setFechaCreacion(carrito.getFechaCreacion());
+		infoCarrito.setFechaActualizacion(carrito.getFechaActualizacion());
+		infoCarrito.setNombCliente(carrito.getCliente().getCodigoPersona().getNombres());
+		infoCarrito.setEstado(carrito.getEstado());
+		infoCarrito.setCantidadProductos(carrito.getCantidad());
+		
+		return infoCarrito;
+	}
+	
+	public static InfoDetalleCarritoDto mapToInfoDetalleCarritoDto(DetalleDeCarrito detalle) {
+		
+		InfoDetalleCarritoDto infoDetalle = new InfoDetalleCarritoDto();
+		infoDetalle.setCodigoDetalle(detalle.getCodigoDetalle());
+		infoDetalle.setCodCarrito(detalle.getCarrito().getCodigoCarrito());
+		infoDetalle.setProducto(detalle.getProducto().getNombre_pro());
+		infoDetalle.setCantidad(detalle.getCantidaddetalle());
+		infoDetalle.setPrecioTotal(detalle.getTotal());
+		
+		return infoDetalle;
+	
 	}
 
 }
