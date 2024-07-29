@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -24,19 +26,20 @@ import lombok.Setter;
 public class Empleado {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_emp")
     private Integer codigoEmpleado;
 
-    @Column(name = "sueldoEmp")
-    private float sueldo;
+    @Column(name = "sueldo_emp")
+    private Double sueldo;
 
     @Column(name = "horas_Trabajo")
     private Integer horas;
 
-    @Column(name = "fechaCreacion")
+    @Column(name = "fecha_creacion")
     private LocalDate fechaCreacion;
 
-    @Column(name = "fechaActualizacion")
+    @Column(name = "fecha_actualizacion")
     private LocalDate fechaActualizacion;
     
     @Column(name = "persona_id_per")

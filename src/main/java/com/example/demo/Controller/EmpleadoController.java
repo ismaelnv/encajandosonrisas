@@ -47,7 +47,13 @@ public class EmpleadoController {
 	
 	@PostMapping("/empleados")
 	public Empleado crearEmpleado(@RequestBody Empleado empleado) {
-		
+
+		//System.out.println(empleado.getCodigoEmpleado());
+		System.out.println(empleado.getHoras());
+		System.out.println(empleado.getPersonaId());
+		System.out.println("sueldo"+ empleado.getSueldo());
+		//System.out.println(empleado.getFechaActualizacion());
+		//System.out.println(empleado.getFechaCreacion());
         return _serviceEmpleado.agregarEmpleado(empleado);
 	}
 

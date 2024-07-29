@@ -58,6 +58,7 @@ public class EmpleadoService implements IEmpleadoService {
 		}
 
         empleado.setFechaCreacion(LocalDate.now());
+        empleado.setFechaActualizacion(LocalDate.now());
 		return _repositoryEmpleado.save(empleado);
     }
 

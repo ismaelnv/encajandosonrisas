@@ -5,8 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
+import com.example.demo.EncajandoSonrisasExceptions.ExceptionDetails;
 import com.example.demo.Interfaz.IProducto;
+import com.example.demo.InterfazServicios.IEmpleadoService;
 import com.example.demo.InterfazServicios.IProductoServicios;
+import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Imagen;
 import com.example.demo.Modelos.Producto;
 
@@ -15,6 +21,9 @@ public class ProductoServicios implements IProductoServicios {
 
 	@Autowired
 	private IProducto _productoRepository;
+
+	@Autowired
+	private IEmpleadoService _empleadoService;
 
 	private String rutaEstatica = "http://localhost:8080/imagenes/";
 
@@ -27,7 +36,6 @@ public class ProductoServicios implements IProductoServicios {
 			
 			for (Imagen imagen : producto.getImagenes()) {
 
-				
 				imagen.setNombre(rutaEstatica+imagen.getNombre());
 			}
 		}
@@ -36,9 +44,24 @@ public class ProductoServicios implements IProductoServicios {
 	}
 
 	@Override
-	public Optional<Producto> obtenerProducto(int id) {
+	public Optional<Producto> obtenerProducto(Integer id)
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions 
+	{
+
+		if(id == null  || id == 0){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del producto no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+		}
 
 		Optional<Producto> producto = _productoRepository.findById(id);
+
+		if (!producto.isPresent()) {
+
+			throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+id+" no se encuentran en la base de datos",
+			new ExceptionDetails("Producto no encontrado", "Error"));
+		}
 
 		for (Imagen imagen : producto.get().getImagenes()) {
 
@@ -49,43 +72,103 @@ public class ProductoServicios implements IProductoServicios {
 	}
 
 	@Override
-	public Producto modificarProducto(int id, Producto p) {
+	public Producto modificarProducto(Integer idE, Integer id, Producto p)
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions 
+	{
 
-		Optional<Producto> producto = this.obtenerProducto(id);
-		if (producto.isPresent()) {
-			p.setFecha_actu(LocalDate.now());
-			return _productoRepository.save(p);
+		if(idE == null || idE == 0){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del empleado no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));
 		}
-		return null;
-		
+
+		if(id == 0 || id == null){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del producto no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));
+		}
+
+		Optional<Empleado> empelado = this._empleadoService.obtenerEmpleado(idE);
+
+		if (empelado.isPresent()){
+
+			Optional<Producto> producto = this.obtenerProducto(id);
+
+			if (producto.isPresent()) {
+
+				p.setFecha_actu(LocalDate.now());
+				return _productoRepository.save(p);
+			}
+
+			throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+id+" no se encuentran en la base de datos",
+			new ExceptionDetails("Producto no encontrado", "Error"));
+		}
+
+		throw new EncajandoSonrisasNotFountExeptions("El empleado con el codigo "+idE+" no se encuentran en la base de datos",
+		new ExceptionDetails("No cuenta con los permisos para actualizar productos", "Error"));
 	}
 
 	@Override
-	public Producto agregarProducto(Producto p) {
+	public Producto agregarProducto(Integer idE, Producto p)
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions 
+	{	
+
+		if(idE == null || idE == 0){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del empleado no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));
+		}
+		
+		Optional<Empleado> empleado = this._empleadoService.obtenerEmpleado(idE);
+
+		if (!empleado.isPresent()) {
+			
+			throw new EncajandoSonrisasNotFountExeptions("El empleado con el codigo "+idE+" no se encuentran en la base de datos",
+			new ExceptionDetails("No cuenta con los permisos para agregar productos", "Error"));
+		}
 
 		Producto producto = _productoRepository.save(p);
 		return producto;
 	}
 
 	@Override
-	public Producto eliminarProducto(int id) {
+	public Producto eliminarProducto(Integer idE, Integer id)
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions 
+	{	
+
+		if(idE == null || idE == 0){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del empleado no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));
+		}
+
+		if(id == 0 || id == null){
+
+			throw new EncajandoSonrisasBadRequestExceptions("id del producto no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));
+		}
+
+		Optional<Empleado> empelado = this._empleadoService.obtenerEmpleado(idE);
+
+		if (!empelado.isPresent()) {
+			
+			throw new EncajandoSonrisasNotFountExeptions("El empleado con el codigo "+idE+" no se encuentran en la base de datos",
+			new ExceptionDetails("No cuenta con los permisos para eliminar productos", "Error"));
+		}
 		
 	    Optional<Producto> optionalProducto = _productoRepository.findById(id);
+
 	    if (optionalProducto.isPresent()) {
+
 	        Producto producto = optionalProducto.get();
 	        producto.setEstado(false);
 	        return _productoRepository.save(producto);
 	    }
-	    return null;
+
+	    throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+id+" no se encuentran en la base de datos",
+		new ExceptionDetails("Error al momento de eliminar el producto", "Error"));
 	}
-
-	@Override
-	public void eliminarProductoDelSistema(Integer id) {
-		
-		if(id != 0 && id != null){
-
-			_productoRepository.deleteById(id);
-		}
-	}
-
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,39 +30,44 @@ public class ImagenController {
     private IImagenService _serviceImagen;
 
     @PostMapping
-	public void agreagrImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto) {
+	public ResponseEntity<Void> agreagrImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto) {
 		
         _serviceImagen.agregarImagen(file, codigoProducto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
     @GetMapping
-	public List<Imagen> listarImagenes(){
+	public ResponseEntity<List<Imagen>> listarImagenes(){
 		
         List<Imagen> imagenes = _serviceImagen.listarImagenes();
-		return imagenes;
+		return ResponseEntity.ok(imagenes);
 	}
 
     @GetMapping("/{id}")
-    public Optional<Imagen> buscarImagenPorId(@PathVariable Integer id){
+    public ResponseEntity<Optional<Imagen>> buscarImagenPorId(@PathVariable Integer id){
 
-        return _serviceImagen.traerImagenPorId(id);
+        Optional<Imagen> imagen = _serviceImagen.traerImagenPorId(id);
+        return ResponseEntity.ok(imagen);
     }
 
     @PutMapping("/{id}")
-    public void actuaizarImagen(@PathVariable Integer id, @RequestBody Imagen imagen){
+    public ResponseEntity<Void> actuaizarImagen(@PathVariable Integer id, @RequestBody Imagen imagen){
 
         _serviceImagen.actualizarImagenes(id, imagen);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     
     @DeleteMapping("/{id}")
-    public void elimianrImagen(@PathVariable Integer id){
+    public ResponseEntity<Void> elimianrImagen(@PathVariable Integer id){
 
         _serviceImagen.elimianrImagen(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/")
-    public List<Imagen> agreagrImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto){
+    public ResponseEntity<List<Imagen>> agreagrImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto){
 
-        return  _serviceImagen.agreagrListaDeImagenes(file, codigoProducto);
+        List<Imagen> imagens = _serviceImagen.agreagrListaDeImagenes(file, codigoProducto);
+        return new ResponseEntity<>(imagens, HttpStatus.CREATED);
     }
 }
