@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.IVentasServicios;
+import com.example.demo.Modelos.Carrito;
 import com.example.demo.Modelos.Ventas;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
+import com.example.demo.Modelos.DTO.InfoVentaDto;
+import com.example.demo.Modelos.DTO.VentaDto;
 
 @RestController
 @RequestMapping
@@ -30,6 +34,13 @@ public class VentasController {
 	
 	}
 	
+	@GetMapping("/infoventas")
+	public List<InfoVentaDto> listarInfoCarritos(){
+		
+        List<InfoVentaDto> ventas = service.listarInfoVentas();
+		return ventas;
+	}
+	
 	@GetMapping("/ventas/{id}")
 	public Optional<Ventas> obtener(@PathVariable int id){
 		return service.obtenerVenta(id);
@@ -43,9 +54,9 @@ public class VentasController {
 		return modificado;
 	}
 	
-	@PostMapping("/ventas/nuevo")
-	public Ventas crear(@RequestBody Ventas v) {
-		return service.agregarVenta(v);
+	@PostMapping("/ventas")
+	public Ventas crear(@RequestBody VentaDto ventaDto) {
+		return service.agregarVenta(ventaDto.getCodCarrito());
 	}
 
 	@PatchMapping("/ventas/{id}")

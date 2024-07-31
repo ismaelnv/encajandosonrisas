@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class VentaDto {
 	
-	private Integer codventa;
-	private String nomventa;
+	private Integer codCarrito;
 
 }
