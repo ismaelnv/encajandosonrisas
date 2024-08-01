@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
 import com.example.demo.InterfazServicios.IImagenService;
 import com.example.demo.Modelos.Imagen;
 
@@ -30,9 +32,12 @@ public class ImagenController {
     private IImagenService _serviceImagen;
 
     @PostMapping
-	public ResponseEntity<Void> agreagrImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto) {
+	public ResponseEntity<Void> agreagrImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto, Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
 		
-        _serviceImagen.agregarImagen(file, codigoProducto);
+        _serviceImagen.agregarImagen(file, codigoProducto,codigoEmpleado);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
@@ -44,30 +49,39 @@ public class ImagenController {
 	}
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Imagen>> buscarImagenPorId(@PathVariable Integer id){
+    public ResponseEntity<Optional<Imagen>> buscarImagenPorId(@PathVariable Integer id)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
 
         Optional<Imagen> imagen = _serviceImagen.traerImagenPorId(id);
         return ResponseEntity.ok(imagen);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> actuaizarImagen(@PathVariable Integer id, @RequestBody Imagen imagen){
+    @PutMapping("/{id}/{codigoEmpleado}")
+    public ResponseEntity<Void> actuaizarImagen(@PathVariable Integer id, @RequestBody Imagen imagen, @PathVariable Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 
-        _serviceImagen.actualizarImagenes(id, imagen);
+        _serviceImagen.actualizarImagenes(id, codigoEmpleado, imagen);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> elimianrImagen(@PathVariable Integer id){
+    @DeleteMapping("/{id}/{codigoEmpleado}")
+    public ResponseEntity<Void> elimianrImagen(@PathVariable Integer id, @PathVariable Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 
-        _serviceImagen.elimianrImagen(id);
+        _serviceImagen.eliminarImagen(id, codigoEmpleado);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<List<Imagen>> agreagrImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto){
+    @PostMapping("/lisImagenes")
+    public ResponseEntity<List<Imagen>> agreagrImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto, Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 
-        List<Imagen> imagens = _serviceImagen.agreagrListaDeImagenes(file, codigoProducto);
+        List<Imagen> imagens = _serviceImagen.agregarListaDeImagenes(file, codigoProducto, codigoEmpleado);
         return new ResponseEntity<>(imagens, HttpStatus.CREATED);
     }
 }

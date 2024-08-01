@@ -12,15 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
+import com.example.demo.EncajandoSonrisasExceptions.ExceptionDetails;
 import com.example.demo.Interfaz.IImage;
+import com.example.demo.InterfazServicios.IEmpleadoService;
 import com.example.demo.InterfazServicios.IImagenService;
+import com.example.demo.InterfazServicios.IProductoServicios;
+import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Imagen;
+import com.example.demo.Modelos.Producto;
 
 @Service
 public class ImagenService implements IImagenService {
 
     @Autowired 
     private IImage _repositoryImagen;
+
+    @Autowired 
+    private IProductoServicios _iProductoServicios;
+
+    @Autowired IEmpleadoService _iEmpleadoService;
 
     private final String rutaGeneral = "src/main/resources/img/";
 
@@ -32,8 +44,40 @@ public class ImagenService implements IImagenService {
     }
 
     @Override
-    public void agregarImagen(MultipartFile file,Integer codigoProducto){
+    public void agregarImagen(MultipartFile file,Integer codigoProducto, Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
         
+
+        if (codigoEmpleado == null || codigoEmpleado == 0) {
+
+            throw new EncajandoSonrisasBadRequestExceptions("id del empleado no valido no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+        }
+
+        Optional<Empleado> empleado = this._iEmpleadoService.obtenerEmpleado(codigoEmpleado);
+
+        if (!empleado.isPresent()) {
+            
+            throw new EncajandoSonrisasNotFountExeptions("El empleado con el codigo "+codigoEmpleado+" no existe en la base de datos",
+			new ExceptionDetails("No cuenta con los permisos suficientes", "Error"));
+        }
+
+        if (codigoProducto == 0 || codigoProducto == null) {
+
+            throw new EncajandoSonrisasBadRequestExceptions("id del producto no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+        }
+
+        Optional<Producto> productos = this._iProductoServicios.obtenerProducto(codigoProducto);
+
+        if (!productos.isPresent()) {
+            
+            throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+codigoProducto+" no existe en la base de datos",
+			new ExceptionDetails("No se logro encontrar el producto en la base de datos", "Error"));
+        }
+
         String nombreImagen = file.getOriginalFilename();
         String rutaArchivo = rutaGeneral+nombreImagen;
         Path carpetaImagenes = Paths.get(rutaArchivo).getParent();
@@ -65,20 +109,55 @@ public class ImagenService implements IImagenService {
     }
 
     @Override
-    public Optional<Imagen> traerImagenPorId(Integer id) {
+    public Optional<Imagen> traerImagenPorId(Integer id) 
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
         
         if(id != 0 && id != null){
 
-           return _repositoryImagen.findById(id); 
+            Optional<Imagen> imagen = _repositoryImagen.findById(id); 
+
+            if (!imagen.isPresent()) {
+
+                throw new EncajandoSonrisasNotFountExeptions("La imagen con el codigo "+id+" No se encontro en la base de datos",
+			    new ExceptionDetails("No se logro encontrar la imagen en la base de datos", "Error")); 
+            }
+
+            return imagen;
         }
 
-        return Optional.empty();
+        throw new EncajandoSonrisasBadRequestExceptions("id de la imagen no es valido", 
+        new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
     }
 
     @Override
-    public void actualizarImagenes(Integer id, Imagen imagen){
+    public void actualizarImagenes(Integer id, Integer codigoEmpleado, Imagen imagen)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
         
         try {
+
+            if (codigoEmpleado == null || codigoEmpleado == 0) {
+                
+                throw new EncajandoSonrisasBadRequestExceptions("id del empleado no es valido", 
+                new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+            }
+
+            Optional<Empleado> empleado = this._iEmpleadoService.obtenerEmpleado(codigoEmpleado);
+
+            if (!empleado.isPresent()) {
+
+                throw new EncajandoSonrisasNotFountExeptions("id "+codigoEmpleado+" del empleado no fue encontrando en la base de datos", 
+                new ExceptionDetails("Su codigo de empleado no es valido para actualizar imagenes", "ERROR")); 
+            }
+
+            if (id == 0 || id == null) {
+
+                throw new EncajandoSonrisasBadRequestExceptions("id de la imagen no valido", 
+                new ExceptionDetails("Error Datos Invalidos", "ERROR"));
+            }
 
             Optional<Imagen> imagenObtenida = traerImagenPorId(id);
 
@@ -105,6 +184,9 @@ public class ImagenService implements IImagenService {
                 }   
             }
 
+            throw new EncajandoSonrisasNotFountExeptions("id "+id+" de la imagen no fue encontrado en la base de datos", 
+            new ExceptionDetails("No se logro encontra la imagen", "ERROR")); 
+
         } catch (IOException e) {
            
             e.printStackTrace();
@@ -112,8 +194,25 @@ public class ImagenService implements IImagenService {
     }
 
     @Override
-    public void elimianrImagen(Integer id) {
+    public void eliminarImagen(Integer id, Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
         
+        if (codigoEmpleado == 0 || codigoEmpleado == null){
+
+            throw new EncajandoSonrisasBadRequestExceptions("id del empleado no es valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR"));             
+        }
+
+        Optional<Empleado> empleado = this._iEmpleadoService.obtenerEmpleado(codigoEmpleado);
+
+        if (!empleado.isPresent()) {
+
+            throw new EncajandoSonrisasNotFountExeptions("id "+codigoEmpleado+" del empleado no fue encontrando en la base de datos", 
+            new ExceptionDetails("Su codigo de empleado no es valido para eliminar imagenes", "ERROR")); 
+        }
+
         if(id != 0 && id != null){
 
             Optional<Imagen> imagen = traerImagenPorId(id);
@@ -138,11 +237,48 @@ public class ImagenService implements IImagenService {
                 }
               
             }
+
+            throw new EncajandoSonrisasNotFountExeptions("id "+id+" de la imagen no fue encontrado en la base de datos", 
+            new ExceptionDetails("No se logro encontrar la imagen", "ERROR"));
         }
+
+        throw new EncajandoSonrisasBadRequestExceptions("id de la imagen no valido", 
+        new ExceptionDetails("Error Datos Invalidos", "ERROR"));
     }
 
     @Override
-    public List<Imagen> agreagrListaDeImagenes(List<MultipartFile> files, Integer codigoProducto) {
+    public List<Imagen> agregarListaDeImagenes(List<MultipartFile> files, Integer codigoProducto, Integer codigoEmpleado)
+    throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions
+    {
+
+        if (codigoEmpleado == null || codigoEmpleado == 0) {
+                
+            throw new EncajandoSonrisasBadRequestExceptions("id del empleado no es valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+        }
+
+        Optional<Empleado> empleado = this._iEmpleadoService.obtenerEmpleado(codigoEmpleado);
+
+        if (!empleado.isPresent()) {
+
+            throw new EncajandoSonrisasNotFountExeptions("id "+codigoEmpleado+" del empleado no fue encontrando en la base de datos", 
+            new ExceptionDetails("Su codigo de empleado no es valido para actualizar imagenes", "ERROR")); 
+        }
+
+        if (codigoProducto == 0 || codigoProducto == null) {
+
+            throw new EncajandoSonrisasBadRequestExceptions("id del producto no valido", 
+            new ExceptionDetails("Error Datos Invalidos", "ERROR")); 
+        }
+
+        Optional<Producto> productos = this._iProductoServicios.obtenerProducto(codigoProducto);
+
+        if (!productos.isPresent()) {
+            
+            throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+codigoProducto+" no existe en la base de datos",
+			new ExceptionDetails("No se logro encontrar el producto en la base de datos", "Error"));
+        }
         
         List<Integer> idImagenesNuevas = new ArrayList<>();
 
@@ -180,6 +316,5 @@ public class ImagenService implements IImagenService {
         }
 
         return _repositoryImagen.findAllById(idImagenesNuevas);
-    } 
-    
+    }   
 }
