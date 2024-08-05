@@ -32,7 +32,7 @@ public class ImagenController {
     private IImagenService _serviceImagen;
 
     @PostMapping
-	public ResponseEntity<Void> agreagrImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto, Integer codigoEmpleado)
+	public ResponseEntity<Void> agregarImagen(@RequestParam("file") MultipartFile file, Integer codigoProducto, Integer codigoEmpleado)
     throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions
     {
@@ -73,11 +73,11 @@ public class ImagenController {
 	EncajandoSonrisasNotFountExeptions{
 
         _serviceImagen.eliminarImagen(id, codigoEmpleado);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/lisImagenes")
-    public ResponseEntity<List<Imagen>> agreagrImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto, Integer codigoEmpleado)
+    public ResponseEntity<List<Imagen>> agregarImagenes(@RequestParam("file") List<MultipartFile> file, Integer codigoProducto, Integer codigoEmpleado)
     throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions{
 

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,52 +16,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
+import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
+import com.example.demo.EncajandoSonrisasResponse.ApiResponse;
 import com.example.demo.InterfazServicios.IEmpleadoService;
 import com.example.demo.Modelos.Empleado;
+import com.example.demo.Modelos.DTO.EmpleadoActualizarDto;
+import com.example.demo.Modelos.DTO.EmpleadoCreateDto;
 
 @RestController
-@RequestMapping
+@RequestMapping("/empleados")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EmpleadoController {
 
     @Autowired
     private IEmpleadoService _serviceEmpleado;
 
-    @GetMapping("/empleados")
-	public List<Empleado> listarEmpleados(){
+    @GetMapping
+	public ResponseEntity<List<Empleado>> listarEmpleados(){
 		
         List<Empleado> empleados = _serviceEmpleado.listarEmpleados();
-		return empleados;
+		return ResponseEntity.ok(empleados);
 	}
 	
-	@GetMapping("/empleados/{codigoEmpleado}")
-	public Optional<Empleado> obtenerEmpleadoId(@PathVariable int codigoEmpleado){
+	@GetMapping("/{codigoEmpleado}")
+	public ResponseEntity<Empleado> obtenerEmpleadoId(@PathVariable int codigoEmpleado)
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 		
-        return _serviceEmpleado.obtenerEmpleado(codigoEmpleado);
+        Optional<Empleado> empleado = _serviceEmpleado.obtenerEmpleado(codigoEmpleado);
+		return ResponseEntity.ok(empleado.get());
 	}
 	
-	@PutMapping("/empleados/{codigoEmpleado}")
-	public Empleado editarEmpleado(@PathVariable int codigoEmpleado, @RequestBody Empleado empleado) {
+	@PutMapping("/{codigoEmpleado}")
+	public ResponseEntity<ApiResponse<Empleado>> editarEmpleado(@PathVariable int codigoEmpleado, @RequestBody EmpleadoActualizarDto empleadoActualizarDto) 
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
         
-		Empleado empleadoModificado =  _serviceEmpleado.modificarEmpleado(codigoEmpleado, empleado);
-		return empleadoModificado;
+		Empleado empleadoModificado =  _serviceEmpleado.modificarEmpleado(codigoEmpleado, empleadoActualizarDto);
+		ApiResponse<Empleado> empleadoMensaje = new ApiResponse<>("Empleado fue actualizado correctamente", empleadoModificado);
+		return ResponseEntity.ok(empleadoMensaje);
 	}
 	
-	@PostMapping("/empleados")
-	public Empleado crearEmpleado(@RequestBody Empleado empleado) {
+	@PostMapping
+	public ResponseEntity<ApiResponse<Empleado>> crearEmpleado(@RequestBody EmpleadoCreateDto empleadoCreateDto) 
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 
-		//System.out.println(empleado.getCodigoEmpleado());
-		System.out.println(empleado.getHoras());
-		System.out.println(empleado.getPersonaId());
-		System.out.println("sueldo"+ empleado.getSueldo());
-		//System.out.println(empleado.getFechaActualizacion());
-		//System.out.println(empleado.getFechaCreacion());
-        return _serviceEmpleado.agregarEmpleado(empleado);
+        Empleado nuevoEmpleado = _serviceEmpleado.agregarEmpleado(empleadoCreateDto);
+		ApiResponse<Empleado> empleadoMensaje = new ApiResponse<>(" El empleado fue creado exitosamente", nuevoEmpleado);
+		return new ResponseEntity<>(empleadoMensaje, HttpStatus.CREATED);
 	}
 
-	@DeleteMapping("/empleado/{codigoEmpleado}")
-	public void eliminarEmpleado(@PathVariable int codigoEmpleado) {
+	@DeleteMapping("/{codigoEmpleado}")
+	public ResponseEntity<String> eliminarEmpleado(@PathVariable int codigoEmpleado) 
+	throws EncajandoSonrisasBadRequestExceptions, 
+	EncajandoSonrisasNotFountExeptions{
 
-		_serviceEmpleado.eliminarEmpleado(codigoEmpleado);
+		String mensaje = _serviceEmpleado.eliminarEmpleado(codigoEmpleado);
+		return ResponseEntity.ok(mensaje);
 	}    
 }

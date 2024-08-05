@@ -15,6 +15,9 @@ import com.example.demo.InterfazServicios.IProductoServicios;
 import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Imagen;
 import com.example.demo.Modelos.Producto;
+import com.example.demo.Modelos.DTO.AppMaper;
+import com.example.demo.Modelos.DTO.ProductoActualizarDto;
+import com.example.demo.Modelos.DTO.ProductoCreateDto;
 
 @Service
 public class ProductoServicios implements IProductoServicios {
@@ -24,6 +27,8 @@ public class ProductoServicios implements IProductoServicios {
 
 	@Autowired
 	private IEmpleadoService _empleadoService;
+
+	@Autowired AppMaper _appMaper;
 
 	private String rutaEstatica = "http://localhost:8080/imagenes/";
 
@@ -72,7 +77,7 @@ public class ProductoServicios implements IProductoServicios {
 	}
 
 	@Override
-	public Producto modificarProducto(Integer idE, Integer id, Producto p)
+	public Producto modificarProducto(Integer idE, Integer id, ProductoActualizarDto productoActualizarDto)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions 
 	{
@@ -97,8 +102,10 @@ public class ProductoServicios implements IProductoServicios {
 
 			if (producto.isPresent()) {
 
-				p.setFecha_actu(LocalDate.now());
-				return _productoRepository.save(p);
+				Producto productoActualizado = _appMaper.actualizarProductoDesdeDto(productoActualizarDto, producto.get());
+
+				productoActualizado.setFecha_actu(LocalDate.now());
+				return _productoRepository.save(productoActualizado);
 			}
 
 			throw new EncajandoSonrisasNotFountExeptions("El producto con el codigo "+id+" no se encuentran en la base de datos",
@@ -110,7 +117,7 @@ public class ProductoServicios implements IProductoServicios {
 	}
 
 	@Override
-	public Producto agregarProducto(Integer idE, Producto p)
+	public Producto agregarProducto(Integer idE, ProductoCreateDto productoCreateDto)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions 
 	{	
@@ -129,8 +136,12 @@ public class ProductoServicios implements IProductoServicios {
 			new ExceptionDetails("No cuenta con los permisos para agregar productos", "Error"));
 		}
 
-		Producto producto = _productoRepository.save(p);
-		return producto;
+		Producto producto = _appMaper.productoC(productoCreateDto);
+		producto.setFecha_cre(LocalDate.now());
+		producto.setEstado(true);
+
+		Producto nuevoProducto = _productoRepository.save(producto);
+		return nuevoProducto;
 	}
 
 	@Override

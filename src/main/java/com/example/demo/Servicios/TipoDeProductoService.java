@@ -18,6 +18,9 @@ import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Imagen;
 import com.example.demo.Modelos.Producto;
 import com.example.demo.Modelos.TipoDeProducto;
+import com.example.demo.Modelos.DTO.AppMaper;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoActualizar;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoCreate;
 
 @Service
 public class TipoDeProductoService implements ITipoDeProductoService{
@@ -27,6 +30,9 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 
 	@Autowired
 	private IEmpleadoService _empleadoService;
+
+	@Autowired
+	private AppMaper _AppMaper;
 
 	private String rutaEstatica = "http://localhost:8080/imagenes/";
 
@@ -68,7 +74,7 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 	}
 
 	@Override
-	public TipoDeProducto modificarTipoProducto(Integer codigoEmpleado, Integer codigotProducto, TipoDeProducto tProducto) 
+	public TipoDeProducto modificarTipoProducto(Integer codigoEmpleado, Integer codigotProducto, TipoDeProductoDtoActualizar tipoDeProductoDtoActualizar) 
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions
 	{
@@ -97,8 +103,10 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 
 		if (tProduc.isPresent()) {
 
-			tProducto.setFechaActualizacion(LocalDate.now());
-			return _repositoryTDProducto.save(tProducto);
+			TipoDeProducto tipoDeProducto = _AppMaper.actualizarTipoDeProductoDesdeDto(tipoDeProductoDtoActualizar, tProduc.get());
+			tipoDeProducto.setFechaActualizacion(LocalDate.now());
+			tipoDeProducto.setEstado(true);
+			return _repositoryTDProducto.save(tipoDeProducto);
 		}
 
 		throw new EncajandoSonrisasNotFountExeptions("El tipo de producto con el codigo "+codigotProducto+" no se encuentran en la base de datos",
@@ -106,7 +114,7 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 	}
 
 	@Override
-	public TipoDeProducto agregarTipoProducto(Integer codigoEmpleado, TipoDeProducto tProducto)
+	public TipoDeProducto agregarTipoProducto(Integer codigoEmpleado, TipoDeProductoDtoCreate tipoDeProductoDtoCreate)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions
 	{	
@@ -125,12 +133,16 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 			new ExceptionDetails("No cuenta con los permisos para agregar un Tipo de Producto", "Error"));
 		}
 
-		TipoDeProducto tipoDeProductoNuevo = _repositoryTDProducto.save(tProducto);
+		TipoDeProducto tipoDeProducto = _AppMaper.tipoDeProductoC(tipoDeProductoDtoCreate);
+		tipoDeProducto.setFechaCreacion(LocalDate.now());
+
+		TipoDeProducto tipoDeProductoNuevo = _repositoryTDProducto.save(tipoDeProducto);
+
 		return tipoDeProductoNuevo;
 	}
 
 	@Override
-	public void eliminarTipoDeProducto(Integer codigoEmpleado, Integer codigotProducto) 
+	public String eliminarTipoDeProducto(Integer codigoEmpleado, Integer codigotProducto) 
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions
 	{
@@ -163,6 +175,7 @@ public class TipoDeProductoService implements ITipoDeProductoService{
 		}
 
 		_repositoryTDProducto.deleteById(codigotProducto);
+		return "El tipo de producto ha sido eliminado exitosamente.";
 	}
 
 	@Override

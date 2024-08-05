@@ -48,5 +48,5 @@ public class Empleado {
     @OneToOne
     @JoinColumn(name = "persona_id_per",insertable = false, updatable = false)
     @JsonBackReference
-    private Persona CodigoPersona;  
+    private Persona codigoPersona;  
 }

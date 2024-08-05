@@ -1,22 +1,16 @@
 package com.example.demo.Modelos.DTO;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
-public class TipoProductoDto {
-
-    private Integer codigoTP;
-    private String nombre;
-    private LocalDate fechaCreacion; 
-    private LocalDate fechaActualizacion;
-    private boolean estado;
+public class TipoDeProductoDtoActualizar {
     
+    private String nombre;
+    private boolean estado;
 }

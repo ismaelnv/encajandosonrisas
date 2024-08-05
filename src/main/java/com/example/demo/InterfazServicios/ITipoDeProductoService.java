@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
 import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
 import com.example.demo.Modelos.TipoDeProducto;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoActualizar;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoCreate;
 
 @Repository
 public interface ITipoDeProductoService {
@@ -18,15 +20,15 @@ public interface ITipoDeProductoService {
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions;
 
-	public TipoDeProducto modificarTipoProducto(Integer codigoEmpleado, Integer codigotProducto, TipoDeProducto tProducto)
+	public TipoDeProducto modificarTipoProducto(Integer codigoEmpleado, Integer codigotProducto, TipoDeProductoDtoActualizar tipoDeProductoDtoActualizar)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions;
 
-	public TipoDeProducto agregarTipoProducto(Integer codigoEmpleado, TipoDeProducto tProducto)
+	public TipoDeProducto agregarTipoProducto(Integer codigoEmpleado, TipoDeProductoDtoCreate tipoDeProductoDtoCreate)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions;
 	
-	public void eliminarTipoDeProducto(Integer codigoEmpleado, Integer codigotProducto)
+	public String eliminarTipoDeProducto(Integer codigoEmpleado, Integer codigotProducto)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions;
 

@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import java.security.InvalidKeyException;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasBadRequestExceptions;
 import com.example.demo.EncajandoSonrisasExceptions.EncajandoSonrisasNotFountExeptions;
+import com.example.demo.EncajandoSonrisasResponse.ApiResponse;
 import com.example.demo.InterfazServicios.IProductoServicios;
 import com.example.demo.Modelos.Producto;
+import com.example.demo.Modelos.DTO.ProductoActualizarDto;
+import com.example.demo.Modelos.DTO.ProductoCreateDto;
 
 @RestController
 @RequestMapping("/productos")
@@ -49,32 +50,35 @@ public class ProductoController {
 	}
 	
 	@PutMapping("/{idE}/actulizar/{id}")
-	public ResponseEntity<Producto> editar(@PathVariable Integer idE, @PathVariable Integer id, @RequestBody Producto pro)
+	public ResponseEntity<ApiResponse<Producto>> editar(@PathVariable Integer idE, @PathVariable Integer id, @RequestBody ProductoActualizarDto productoActualizarDto)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions
 	{
 
-		Producto modificado =  service.modificarProducto(idE,id, pro);
-		return ResponseEntity.ok(modificado);
+		Producto modificado =  service.modificarProducto(idE,id, productoActualizarDto);
+		ApiResponse<Producto> productoMensaje = new ApiResponse<>("Producto actualizado exitosamente", modificado);
+		return ResponseEntity.ok(productoMensaje);
 	}
 	
 	@PostMapping("/{idEmpleado}")
-	public ResponseEntity<Producto> crear(@PathVariable Integer idEmpleado, @RequestBody Producto pro)
+	public ResponseEntity<ApiResponse<Producto>> crear(@PathVariable Integer idEmpleado, @RequestBody ProductoCreateDto productoCreateDto)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions 
 	{
 		
-		Producto producto = service.agregarProducto(idEmpleado, pro);
-        return new ResponseEntity<>(producto, HttpStatus.CREATED);
+		Producto producto = service.agregarProducto(idEmpleado, productoCreateDto);
+		ApiResponse<Producto> productoMensaje = new ApiResponse<>("Producto creado exitosamente", producto);
+        return new ResponseEntity<>(productoMensaje, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{id}/{idEmpleado}")
-	public ResponseEntity<Void> eliminar(@PathVariable Integer idEmpleado, @PathVariable Integer id)
+	public ResponseEntity<ApiResponse<Producto>> eliminar(@PathVariable Integer idEmpleado, @PathVariable Integer id)
 	throws EncajandoSonrisasBadRequestExceptions, 
 	EncajandoSonrisasNotFountExeptions 
 	{
 
-		service.eliminarProducto(idEmpleado, id);
-		return ResponseEntity.noContent().build(); 
+		Producto producto = service.eliminarProducto(idEmpleado, id);
+		ApiResponse<Producto> productoMensaje = new ApiResponse<>("El producto fue eliminado exitosamente", producto);
+		return ResponseEntity.ok(productoMensaje); 
 	}
 }

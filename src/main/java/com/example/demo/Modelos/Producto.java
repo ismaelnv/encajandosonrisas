@@ -32,23 +32,23 @@ public class Producto implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cod_pro ;
-	private String nombre_pro ;
-	private LocalDate fecha_cre ;
-	private LocalDate fecha_actu ;
+	private int cod_pro;
+	private String nombre_pro;
+	private LocalDate fecha_cre;
+	private LocalDate fecha_actu;
 	@Column(name = "codigo_tipo_categoria")
 	private Integer codigoProducto;
 	@Column(columnDefinition   = "TEXT")
-	private String descripcion ;
-	private double precio ;
+	private String descripcion;
+	private double precio;
 	private String condicion_pro;
-	private boolean estado ;
-	private String imagen_pro ;
-	private String tamanio_pro ;
+	private boolean estado;
+	private String imagen_pro;
+	private String tamanio_pro;
 	private String material;
-	private double peso_pro ;
-	private int edad_recomendada ;
-	private double medidas ;
+	private double peso_pro;
+	private int edad_recomendada;
+	private double medidas;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_tipo_categoria",insertable = false, updatable = false)
