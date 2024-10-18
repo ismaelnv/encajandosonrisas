@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.InterfazServicios.ICarritoService;
 import com.example.demo.Modelos.Carrito;
+import com.example.demo.Modelos.DTO.CarritoDto;
+import com.example.demo.Modelos.DTO.InfoCarritoDto;
+import com.example.demo.Modelos.DTO.ProductoCarritoDto;
 
 @RestController
 @RequestMapping
@@ -28,6 +32,13 @@ public class CarritoController {
 	public List<Carrito> listarCarritos(){
 		
         List<Carrito> carritos = _serviceCarrito.listarCarritos();
+		return carritos;
+	}
+    
+    @GetMapping("/infocarritos")
+	public List<InfoCarritoDto> listarInfoCarritos(){
+		
+        List<InfoCarritoDto> carritos = _serviceCarrito.listarInfoCarritos();
 		return carritos;
 	}
 	
@@ -54,5 +65,25 @@ public class CarritoController {
 
 		_serviceCarrito.eliminarCarrito(codigoCarrito);
 	}
+	
+	@PostMapping("/carritos/agregarproducto/{codcli}")
+	public ResponseEntity<CarritoDto> agregarProducto(@RequestBody ProductoCarritoDto producto, @PathVariable Integer codcli) {
+
+		return ResponseEntity.ok(_serviceCarrito.agregarProducto(producto, codcli));
+	}
+	
+	@GetMapping("/carritos/productos/{codcarrito}")
+	public ResponseEntity<Integer> cantidadPorCarrito(@PathVariable Integer codcarrito){
+		
+		return ResponseEntity.ok(_serviceCarrito.obtenerCantCarrito(codcarrito));
+	}
     
+	@GetMapping("/clientes/{id}/carritos")
+	public List<CarritoDto> carritosCliente(){
+		
+		return null;
+	}
 }
+
+
+

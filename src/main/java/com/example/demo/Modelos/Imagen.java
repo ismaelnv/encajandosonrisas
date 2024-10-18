@@ -26,9 +26,14 @@ public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_imagen")
-    private Integer codigoImagen;   
+    private Integer codigoImagen; 
+    
+    @Column(name = "nombre")
     private String nombre;
+
+    @Column(name = "ruta")
     private String ruta;
+    
     @Column(name = "codigo_producto")
     private Integer codigoProducto; 
 

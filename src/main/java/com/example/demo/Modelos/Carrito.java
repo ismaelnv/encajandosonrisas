@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,41 +26,60 @@ import lombok.Setter;
 @Entity
 @Table(name = "carritocompras")
 public class Carrito {
+	
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_carrito")
     private Integer codigoCarrito;
 
-    @Column(name = "fecha_reacion")
+    @Column(name = "fecha_creacion")
     private LocalDate fechaCreacion;
 
     @Column(name = "fecha_actualizacion")
     private LocalDate fechaActualizacion;
 
+    @Column(name = "estado")
     private Boolean estado;
 
-    @Column(name = "cantidad_productos")
-    private Integer cantidad;
+//    @Column(name = "cantidad_productos")
+//    private Integer cantidad;
 
-    @Column(name = "codigo_cliente")
-    private Integer clienteCodigo;
-
-    @Column(name = "codigo_venta")
-    private Integer ventaCodigo;
-
-    @ManyToOne
-    @JoinColumn(name = "codigo_cliente",insertable = false, updatable = false)
-    @JsonBackReference
-    private Cliente codigoCliente;
+//    @Column(name = "codigo_cliente")
+//    private Integer clienteCodigo;
+//
+//    @Column(name = "codigo_venta")
+//    private Integer ventaCodigo;
 
     @ManyToOne
-    @JoinColumn(name = "codigo_venta",insertable = false, updatable = false)
-    @JsonBackReference
-    private Ventas codigoVenta;
+    @JoinColumn(name = "codigo_cliente")
+    //@JsonBackReference
+    private Cliente cliente;
 
-    private Integer total;
+//    @ManyToOne
+//    @JoinColumn(name = "codigo_venta")
+//    @JsonBackReference
+//    private Ventas venta;
 
-    @OneToMany(mappedBy = "codigoCarrito")
+    
+//    private Integer total;
+
+    @OneToMany(mappedBy = "carrito")
     @JsonBackReference
 	private List<DetalleDeCarrito> dcarritos;
+    
+    public Integer getCantidad() {
+    	Integer canttotal = 0;
+    	for (DetalleDeCarrito detalleDeCarrito : dcarritos) {
+			canttotal += detalleDeCarrito.getCantidaddetalle();
+		}
+    	
+    	return canttotal;
+    }
+    
 }
+
+
+
+
+

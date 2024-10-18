@@ -30,11 +30,17 @@ public class TipoDeProducto implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo_tipo_producto")
     private Integer codigoTP;
+
+    @Column(name = "nombre")
     private String nombre;
+
     @Column(name = "fechacreacion")
     private LocalDate fechaCreacion; 
+    
     @Column(name = "fechaactualizacion")
     private LocalDate fechaActualizacion;
+    
+    @Column(name = "estado")
     private boolean estado;
     
     @OneToMany(mappedBy = "tipoDeProducto")

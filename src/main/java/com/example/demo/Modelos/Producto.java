@@ -32,22 +32,45 @@ public class Producto implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int cod_pro;
+	private int codpro;
+
+	@Column(name = "nombre_pro")
 	private String nombre_pro;
+
+	@Column(name = "fecha_cre")
 	private LocalDate fecha_cre;
+
+	@Column(name = "fecha_actu")
 	private LocalDate fecha_actu;
+
 	@Column(name = "codigo_tipo_categoria")
 	private Integer codigoProducto;
+	
 	@Column(columnDefinition   = "TEXT")
 	private String descripcion;
+
+	@Column(name = "precio")
 	private double precio;
+
+	@Column(name = "condicion_pro")
 	private String condicion_pro;
+
+	@Column(name = "estado")
 	private boolean estado;
-	private String imagen_pro;
+
+	@Column(name = "tamanio_pro")
 	private String tamanio_pro;
+
+	@Column(name = "material")
 	private String material;
+
+	@Column(name = "peso_pro")
 	private double peso_pro;
+
+	@Column(name = "edad_recomendada")
 	private int edad_recomendada;
+
+	@Column(name = "medidas")
 	private double medidas;
 
 	@ManyToOne

@@ -1,6 +1,7 @@
 package com.example.demo.Servicios;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Interfaz.IDetalleDeCarrito;
 import com.example.demo.InterfazServicios.IDetalleDeCarritoService;
 import com.example.demo.Modelos.DetalleDeCarrito;
+import com.example.demo.Modelos.DTO.InfoDetalleCarritoDto;
+import com.example.demo.mapper.CarritoMapper;
 
 @Service
 public class DetalleDeCarritoService implements IDetalleDeCarritoService{
@@ -21,6 +24,20 @@ public class DetalleDeCarritoService implements IDetalleDeCarritoService{
         List<DetalleDeCarrito> detalleDeCarritos = _repositoryDeTalleDeCarrito.findAll();
 		return detalleDeCarritos;
     }
+    
+    @Override
+	public List<InfoDetalleCarritoDto> listarInfoDetalleCarrito() {
+		
+    	List<DetalleDeCarrito> detalles = _repositoryDeTalleDeCarrito.findAll();
+    	List<InfoDetalleCarritoDto> infoDetalles = detalles.stream().map(d ->{
+    		InfoDetalleCarritoDto infoDetalle = new InfoDetalleCarritoDto();
+    		infoDetalle = CarritoMapper.mapToInfoDetalleCarritoDto(d);
+    		return infoDetalle;
+    		
+    	}).collect(Collectors.toList());
+    	
+		return infoDetalles;
+	}
 
     @Override
     public Optional<DetalleDeCarrito> obtenerDetalleDeCarrito(int codigoDCarrito) {
@@ -62,4 +79,6 @@ public class DetalleDeCarritoService implements IDetalleDeCarritoService{
        
         _repositoryDeTalleDeCarrito.deleteById(codigoDCarrito);
     }
+
+	
 }

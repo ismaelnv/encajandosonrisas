@@ -37,11 +37,10 @@ public interface AppMaper {
 
     @Mappings({
         
-        @Mapping(target = "cod_pro", ignore = true),
+        @Mapping(target = "codpro", ignore = true),
         @Mapping(target = "fecha_cre", ignore = true),
         @Mapping(target = "fecha_actu", ignore = true),
         @Mapping(target = "estado", ignore = true),
-        @Mapping(target = "imagen_pro", ignore = true),
         @Mapping(target = "tipoDeProducto", ignore = true),
         @Mapping(target = "imagenes", ignore = true),
     })
@@ -49,10 +48,9 @@ public interface AppMaper {
     
     @Mappings({
         
-        @Mapping(target = "cod_pro", ignore = true),
+        @Mapping(target = "codpro", ignore = true),
         @Mapping(target = "fecha_cre", ignore = true),
         @Mapping(target = "fecha_actu", ignore = true),
-        @Mapping(target = "imagen_pro", ignore = true),
         @Mapping(target = "tipoDeProducto", ignore = true),
         @Mapping(target = "imagenes", ignore = true),
     })
