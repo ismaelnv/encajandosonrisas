@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Interfaz.IPersona;
 import com.example.demo.Modelos.Persona;
 
-
 @Service
 public class DetalleUsuarioService implements UserDetailsService{
 
@@ -22,19 +21,19 @@ public class DetalleUsuarioService implements UserDetailsService{
     private IPersona _persona;
 
     @Override
-    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException  {
        
         Optional<Persona> per = _persona.findBycorreo(correo);
-        System.out.println(per.get().getNombres());
 
         if (per.isPresent()) {
             Persona objPersona = per.get();
             return User.builder()
                 .username(objPersona.getNombres())
-                .password(codificar().encode(objPersona.getPassword()))
-                .roles("ADMIN")
+                .password(objPersona.getPassword())
+                .roles(objPersona.getRoles().name())
                 .build();
         }else{
+            
             throw new UsernameNotFoundException("Usuario no existe..!");
         }
     }

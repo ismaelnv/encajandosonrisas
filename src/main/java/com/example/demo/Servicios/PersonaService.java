@@ -5,17 +5,26 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Interfaz.IPersona;
 import com.example.demo.InterfazServicios.IPersonaService;
 import com.example.demo.Modelos.Persona;
+import com.example.demo.Modelos.DTO.CrearPersonaDto;
+import com.example.demo.mapper.PersonaMapper;
 
 @Service
 public class PersonaService implements IPersonaService {
 
     @Autowired
     private IPersona _repositoryPersona;
+
+    @Autowired
+    private PersonaMapper _personaMapper;
+
+   @Autowired
+    private BCryptPasswordEncoder _bCryptPasswordEncoder; 
 
     @Override
     public List<Persona> listarPersonas() {
@@ -50,14 +59,13 @@ public class PersonaService implements IPersonaService {
     }
 
     @Override
-    public Persona agregarPersona(Persona persona) {
-       
-        if (persona == null) {
-
-			return null;
-		}
-
-		return _repositoryPersona.save(persona);
+    public Persona agregarPersona(CrearPersonaDto persona) {
+    
+        Persona nuevaPersona = _personaMapper.personaCrear(persona);
+        nuevaPersona.setPassword(_bCryptPasswordEncoder.encode(nuevaPersona.getPassword()));
+        nuevaPersona.setFechaCreacion(LocalDate.now());
+        
+		return _repositoryPersona.save(nuevaPersona);
     }
 
     @Override
@@ -65,5 +73,4 @@ public class PersonaService implements IPersonaService {
        
         _repositoryPersona.deleteById(codigoPersona);
     }
-    
 }

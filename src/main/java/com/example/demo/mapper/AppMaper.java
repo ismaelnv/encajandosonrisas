@@ -1,4 +1,4 @@
-package com.example.demo.Modelos.DTO;
+package com.example.demo.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -8,6 +8,12 @@ import org.mapstruct.Mappings;
 import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Producto;
 import com.example.demo.Modelos.TipoDeProducto;
+import com.example.demo.Modelos.DTO.EmpleadoActualizarDto;
+import com.example.demo.Modelos.DTO.EmpleadoCreateDto;
+import com.example.demo.Modelos.DTO.ProductoActualizarDto;
+import com.example.demo.Modelos.DTO.ProductoCreateDto;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoActualizar;
+import com.example.demo.Modelos.DTO.TipoDeProductoDtoCreate;
 
 @Mapper(componentModel = "spring")
 public interface AppMaper {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.InterfazServicios.IPersonaService;
 import com.example.demo.Modelos.Persona;
+import com.example.demo.Modelos.DTO.CrearPersonaDto;
 
 @RestController
 @RequestMapping
@@ -46,7 +47,7 @@ public class PersonaController {
 	}
 	
 	@PostMapping("/personas")
-	public Persona crearPersona(@RequestBody Persona persona) {
+	public Persona crearPersona(@RequestBody CrearPersonaDto persona) {
 		return _servicePersona.agregarPersona(persona);
 	}
 

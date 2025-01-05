@@ -15,9 +15,9 @@ import com.example.demo.InterfazServicios.IProductoServicios;
 import com.example.demo.Modelos.Empleado;
 import com.example.demo.Modelos.Imagen;
 import com.example.demo.Modelos.Producto;
-import com.example.demo.Modelos.DTO.AppMaper;
 import com.example.demo.Modelos.DTO.ProductoActualizarDto;
 import com.example.demo.Modelos.DTO.ProductoCreateDto;
+import com.example.demo.mapper.AppMaper;
 
 @Service
 public class ProductoServicios implements IProductoServicios {

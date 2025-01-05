@@ -5,10 +5,12 @@ import java.util.Base64;
 import java.util.Date;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +24,6 @@ public class Token {
 
     static void crearToken(HttpServletResponse res, String correo, String clave ){
 
-        System.out.println(correo);
         String token = Jwts.builder()
 				.setSubject(correo + "-" + clave)
 				.setExpiration(new Date(System.currentTimeMillis()+(3*60000)))
@@ -34,7 +35,6 @@ public class Token {
     static Authentication validarToken(HttpServletRequest req, UserDetailsService detUs){
 
         String token = req.getHeader("Authorization");
-        System.out.println(token);
 
         if (token != null) {
             
@@ -44,15 +44,11 @@ public class Token {
                             .getBody()
                             .getSubject();
             int pos = datos.indexOf("-");
-            System.out.println(datos);
-            System.out.println(pos);
             String correo = datos.substring(0, pos);
-            System.out.println(correo);
             String passw = datos.substring(pos+1);
-            System.out.println(passw);
 
             UserDetails us = detUs.loadUserByUsername(correo);
-            return new UsernamePasswordAuthenticationToken(correo, passw, us.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(correo,passw, us.getAuthorities());
         }
         return null;
     } 

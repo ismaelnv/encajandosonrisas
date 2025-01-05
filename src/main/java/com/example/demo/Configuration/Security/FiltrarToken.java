@@ -16,7 +16,7 @@ public class FiltrarToken extends OncePerRequestFilter {
 
     UserDetailsService detUs;
 
-    public FiltrarToken(UserDetailsService detUs) {
+    public  FiltrarToken(UserDetailsService detUs) {
 		super();
 		this.detUs = detUs;
 	}

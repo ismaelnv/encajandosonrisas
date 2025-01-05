@@ -2,8 +2,12 @@ package com.example.demo.Modelos;
 
 import java.time.LocalDate;
 
+import com.example.demo.Modelos.Enum.Roles;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -55,4 +59,8 @@ public class Persona {
 
     @Column(name = "fecha_de_nacimiento")
     private LocalDate fechaNacimiento;   
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Roles roles;
 }

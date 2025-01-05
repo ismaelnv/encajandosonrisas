@@ -43,7 +43,8 @@ public class Configurar {
 				.authenticationManager(am)
 				.authorizeHttpRequests(t -> t
 						.requestMatchers(HttpMethod.POST,"/Login").permitAll()
-						.requestMatchers(HttpMethod.GET, "/productos/**").authenticated()
+						.requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/personas/**").authenticated()
                         .and()
 						.addFilterBefore(new FiltrarLogin("/Login",am),
 								UsernamePasswordAuthenticationFilter.class)
